@@ -17,11 +17,19 @@ fi
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 echo "source $DIR/vimrc" > $HOME/.vimrc
 
+# copy coc preferences
+cp ./coc-settings.json $HOME/.vim/coc-settings.json
+
+# install nerd-fonts
+curl -LJ0 https://github.com/ryanoasis/nerd-fonts/blob/master/src/glyphs/Symbols-1000-em%20Nerd%20Font%20Complete.ttf\?raw\=true > symbols-1000-nerd-font.ttf
+
+if ! [[ -d $HOME/.fonts ]]; then
+    mkdir $HOME/.fonts
+fi
+mv symbols-1000-nerd-font.ttf $HOME/.fonts/symbols-1000-nerd-font.ttf
+fc-cache -fv
+
+
 #install plugins
 vim -es -u $HOME/.vimrc -i NONE -c "PlugInstall" -c "qa"
-
-#install YouCompleteMe
-if ! [[ -f $HOME/.vim/cpp_installed ]]; then
-    $HOME/.vim/plugged/YouCompleteMe/install.py --clang-completer
-    touch $HOME/.vim/cpp_installed
-fi
+vim -es -u $HOME/.vimrc -i NONE -c "CocInstall" -c "qa"
