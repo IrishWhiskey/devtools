@@ -21,14 +21,15 @@ echo "source $DIR/vimrc" > $HOME/.vimrc
 cp ./coc-settings.json $HOME/.vim/coc-settings.json
 
 # install nerd-fonts
-curl -LJ0 https://github.com/ryanoasis/nerd-fonts/blob/master/src/glyphs/Symbols-1000-em%20Nerd%20Font%20Complete.ttf\?raw\=true > symbols-1000-nerd-font.ttf
+if ! [[ -f $HOME/.fonts/symbols-1000-nerd-font.ttf ]]; then
+    curl -LJ0 https://github.com/ryanoasis/nerd-fonts/blob/master/src/glyphs/Symbols-1000-em%20Nerd%20Font%20Complete.ttf\?raw\=true > symbols-1000-nerd-font.ttf
 
-if ! [[ -d $HOME/.fonts ]]; then
-    mkdir $HOME/.fonts
+    if ! [[ -d $HOME/.fonts ]]; then
+        mkdir $HOME/.fonts
+    fi
+    mv symbols-1000-nerd-font.ttf $HOME/.fonts/symbols-1000-nerd-font.ttf
+    fc-cache -fv
 fi
-mv symbols-1000-nerd-font.ttf $HOME/.fonts/symbols-1000-nerd-font.ttf
-fc-cache -fv
-
 
 #install plugins
 vim -es -u $HOME/.vimrc -i NONE -c "PlugInstall" -c "qa"
