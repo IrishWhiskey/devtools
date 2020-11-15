@@ -17,9 +17,6 @@ fi
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 echo "source $DIR/vimrc" > $HOME/.vimrc
 
-# copy coc preferences
-cp ./coc-settings.json $HOME/.vim/coc-settings.json
-
 # install nerd-fonts
 if ! [[ -f $HOME/.fonts/symbols-1000-nerd-font.ttf ]]; then
     curl -LJ0 https://github.com/ryanoasis/nerd-fonts/blob/master/src/glyphs/Symbols-1000-em%20Nerd%20Font%20Complete.ttf\?raw\=true > symbols-1000-nerd-font.ttf
@@ -34,3 +31,9 @@ fi
 #install plugins
 vim -es -u $HOME/.vimrc -i NONE -c "PlugInstall" -c "qa"
 vim -es -u $HOME/.vimrc -i NONE -c "CocInstall" -c "qa"
+
+# copy coc preferences
+cp ./coc-settings.json $HOME/.vim/coc-settings.json
+
+# copy coc snippets
+cp -r ultisnips/* $HOME/.config/coc/ultisnips
