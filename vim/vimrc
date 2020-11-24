@@ -38,6 +38,14 @@ Plug 'airblade/vim-gitgutter' " Show git diff in columns
 Plug 'ctrlpvim/ctrlp.vim' " Fuzzy find files
 Plug 'scrooloose/nerdcommenter' " Easily comment multiple lines of code
 
+" Typescript, React, JS, GraphQl syntax highlight
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+Plug 'jparise/vim-graphql'
+
 call plug#end()
 
 colorscheme gruvbox
