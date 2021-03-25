@@ -39,11 +39,11 @@ Plug 'ctrlpvim/ctrlp.vim' " Fuzzy find files
 Plug 'scrooloose/nerdcommenter' " Easily comment multiple lines of code
 
 " Typescript, React, JS, GraphQl syntax highlight
-Plug 'pangloss/vim-javascript'
+"Plug 'pangloss/vim-javascript'
 " Plug 'leafgarland/typescript-vim'
 "Plug 'peitalin/vim-jsx-typescript'
 Plug 'HerringtonDarkholme/yats.vim'
-Plug 'MaxMEllon/vim-jsx-pretty'
+"Plug 'MaxMEllon/vim-jsx-pretty'
 "Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jparise/vim-graphql'
 
