@@ -36,4 +36,5 @@ vim -es -u $HOME/.vimrc -i NONE -c "CocInstall" -c "qa"
 cp ./coc-settings.json $HOME/.vim/coc-settings.json
 
 # copy coc snippets
+mkdir -p $HOME/.config/coc/ultisnips
 cp -r ultisnips/* $HOME/.config/coc/ultisnips
