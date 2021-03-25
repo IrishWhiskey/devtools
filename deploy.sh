@@ -6,9 +6,9 @@ fi
 
 zsh/install.sh
 tmux/install.sh
-vim/install.sh
+nvim/install.sh
 sudo -u $(logname) zsh/setup.sh
 sudo -u $(logname) tmux/setup.sh
-sudo -u $(logname) vim/setup.sh
+sudo -u $(logname) nvim/setup.sh
 
 chsh -s $(which zsh)
