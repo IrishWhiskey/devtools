@@ -2,6 +2,10 @@
 
 echo "nvim setup"
 
+DIR="$( cd "$( dirname "$0" )" && pwd )"
+# install node (used by nvim extensions)
+sudo -u $(logname) $DIR/install-node.sh
+
 # create undodir
 if ! [[ -d $HOME/.config/nvim/undodir ]]; then
 	mkdir -p $HOME/.config/nvim/undodir
@@ -14,7 +18,6 @@ if ! [[ -f $HOME/.config/nvim/autoload/plug.vim ]]; then
 fi
 
 #link .vimrc
-DIR="$( cd "$( dirname "$0" )" && pwd )"
 echo "source $DIR/vimrc" > $HOME/.config/nvim/init.vim
 
 # install nerd-fonts
@@ -33,8 +36,8 @@ nvim -es -u $HOME/.config/nvim/init.vim -i NONE -c "PlugInstall" -c "qa"
 nvim -es -u $HOME/.config/nvim/init.vim -i NONE -c "CocInstall" -c "qa"
 
 # copy coc preferences
-cp ./coc-settings.json $HOME/.config/nvim/coc-settings.json
+cp $DIR/coc-settings.json $HOME/.config/nvim/coc-settings.json
 
 # copy coc snippets
 mkdir -p $HOME/.config/coc/ultisnips
-cp -r ultisnips/* $HOME/.config/coc/ultisnips
+cp -r $DIR/ultisnips/* $HOME/.config/coc/ultisnips
