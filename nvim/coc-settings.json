@@ -9,6 +9,25 @@
         "javascriptreact",
         "typescript.tsx",
         "graphql",
-        "rust"
-    ]
+        "rust",
+        "c",
+        "cpp",
+        "cuda"
+    ],
+    "languageserver": {
+        "ccls": {
+            "command": "ccls",
+            "args": ["--log-file=/tmp/ccls.log", "-v=1"],
+            "filetypes": ["c", "cc", "cpp", "cuda", "c++", "objc", "objcpp"],
+            "rootPatterns": [".ccls", "compile_commands.json"],
+            "initializationOptions": {
+                "cache": {
+                    "directory": "/tmp/ccls"
+                },
+                "client": {
+                    "snippetSupport": true
+                }
+            }
+        }
+    }
 }
