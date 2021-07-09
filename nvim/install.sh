@@ -3,6 +3,9 @@
 echo "nvim install"
 apt install -y build-essential cmake python3-dev
 
+sudo add-apt-repository ppa:neovim-ppa/stable -y
+sudo apt-get update -y
+
 #install neovim
 if ! command -v vim &>/dev/null; then
 	apt install -y neovim
