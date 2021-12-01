@@ -40,6 +40,9 @@ Plug 'scrooloose/nerdcommenter' " Easily comment multiple lines of code
 
 "Plug 'christoomey/vim-tmux-navigator'
 
+" C/C++ autoformat
+Plug 'rhysd/vim-clang-format'
+
 " Typescript, React, JS, GraphQl syntax highlight
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'jparise/vim-graphql'
@@ -162,8 +165,9 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <F2> <Plug>(coc-rename)
 
 " Remap for format selected region
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+nnoremap <Leader>f :<C-u>ClangFormat<CR>
+"xmap <leader>f  <Plug>(coc-format-selected)
+"nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
