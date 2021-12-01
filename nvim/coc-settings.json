@@ -9,10 +9,7 @@
         "javascriptreact",
         "typescript.tsx",
         "graphql",
-        "rust",
-        "c",
-        "cpp",
-        "cuda"
+        "rust"
     ],
     "languageserver": {
         "ccls": {
