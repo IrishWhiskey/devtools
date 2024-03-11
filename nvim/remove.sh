@@ -2,7 +2,6 @@
 
 echo "nvim remove"
 
-rm -rf /home/$(logname)/.config/coc
 rm -rf /home/$(logname)/.config/nvim
 
 #remove neovim

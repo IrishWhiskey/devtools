@@ -13,7 +13,3 @@ else
     apt remove -y vim
     apt install -y neovim
 fi
-
-#install ccls
-sudo apt install -y snapd
-snap install ccls --classic
