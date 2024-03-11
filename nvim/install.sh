@@ -1,15 +1,17 @@
 #!/bin/bash
 
+install_nvim() {
+    wget https://github.com/neovim/neovim/releases/download/v0.9.5/nvim-linux64.tar.gz
+    tar -xf nvim-linux64.tar.gz
+    cp nvim-linux64/bin/nvim /usr/local/bin/nvim
+    ln -s /usr/local/bin/nvim /usr/local/bin/vim
+}
+
 echo "nvim install"
-apt install -y build-essential cmake python3-dev
 
-sudo add-apt-repository ppa:neovim-ppa/stable -y
-sudo apt-get update -y
-
-#install neovim
-if ! command -v vim &>/dev/null; then
-	apt install -y neovim
-else
+# uninstall vim if present
+if command -v vim &>/dev/null; then
     apt remove -y vim
-    apt install -y neovim
 fi
+
+(cd /tmp; install_nvim)
