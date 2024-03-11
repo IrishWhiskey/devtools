@@ -4,8 +4,6 @@ echo "nvim remove"
 
 rm -rf /home/$(logname)/.config/nvim
 
-#remove neovim
-if command -v nvim &>/dev/null; then
-	apt remove -y neovim
-    apt autoremove -y
-fi
+# remove neovim
+rm -f /usr/local/bin/vim
+rm -f /usr/local/bin/nvim
