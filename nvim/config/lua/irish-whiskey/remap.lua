@@ -14,3 +14,11 @@ vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gc<Left><Left><Left>]])
+
+vim.keymap.set("n", "<leader>h", [[:wincmd h<CR>]])
+vim.keymap.set("n", "<leader>j", [[:wincmd j<CR>]])
+vim.keymap.set("n", "<leader>k", [[:wincmd k<CR>]])
+vim.keymap.set("n", "<leader>l", [[:wincmd l<CR>]])
+
+vim.keymap.set("n", "<C-n>", [[:NvimTreeToggle<CR>]])
+vim.keymap.set("n", "<C-q>", [[:NvimTreeCollapse<CR>]])
