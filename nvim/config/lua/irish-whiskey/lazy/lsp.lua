@@ -68,10 +68,10 @@ return {
                                     rope_autoimport = { code_actions = { enabled = false }},
                                     rope_autoimport = { completions = { enabled = false }},
                                     yapf = { enabled = false },
-                                    ruff = { enabled = true, formatEnabled = false },
-                                    -- mypy = { enabled = false },
+                                    ruff = { enabled = true, formatEnabled = true },
+                                    pylsp_mypy = { enabled = false },
                                     -- black = { enabled = false },
-                                    -- isort = { enabled = false }
+                                    isort = { enabled = true }
                                 }
                             }
                         }
