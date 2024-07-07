@@ -8,7 +8,7 @@ linux_install() {
 }
 
 osx_install() {
-    brew install -y neovim
+    sudo -u $(logname) brew install neovim
 }
 
 # uninstall if present

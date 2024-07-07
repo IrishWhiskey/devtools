@@ -24,9 +24,10 @@ if [[ "$OS" == "Linux" ]]; then
 
     rm -f /usr/local/bin/vim
     rm -f /usr/local/bin/nvim
-    rm -rf /home/$(logname)/.config/nvim
 elif [[ "$OS" == "Darwin" ]]; then
-    brew uninstall -y neovim vim
+    sudo -u $(logname) brew uninstall -f neovim vim
 else
     echo "Unknown OS"
 fi
+
+sudo -u $(logname) rm -rf $HOME/.config/nvim
