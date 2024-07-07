@@ -25,5 +25,3 @@ elif [[ "$OS" == "Darwin" ]]; then
 else
     echo "Unknown OS"
 fi
-
-sudo -u $(logname) git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
