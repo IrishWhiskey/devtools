@@ -18,9 +18,12 @@ echo "nvim install"
 
 OS=$(uname -s)
 if [[ "$OS" == "Linux" ]]; then
+    HOME=$(getent passwd $SUDO_USER | cut -d: -f6)
     (cd /tmp; linux_install)
 elif [[ "$OS" == "Darwin" ]]; then
     osx_install
 else
     echo "Unknown OS"
 fi
+
+sudo -u $(logname) git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
