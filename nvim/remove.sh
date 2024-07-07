@@ -30,4 +30,5 @@ else
     echo "Unknown OS"
 fi
 
-sudo -u $(logname) rm -rf $HOME/.config/nvim
+HOME=$(getent passwd $SUDO_USER | cut -d: -f6)
+rm -rf $HOME/.config/nvim
