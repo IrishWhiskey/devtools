@@ -4,6 +4,7 @@ echo "nvim remove"
 
 OS=$(uname -s)
 if [[ "$OS" == "Linux" ]]; then
+    HOME = $(getent passwd $SUDO_USER | cut -d: -f6)
     OS_version=$(uname -v)
 
     if [[ "$OS_version" == *"Ubuntu"* ]]; then
@@ -30,5 +31,4 @@ else
     echo "Unknown OS"
 fi
 
-HOME=$(getent passwd $SUDO_USER | cut -d: -f6)
 rm -rf $HOME/.config/nvim
