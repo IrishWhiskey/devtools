@@ -1,7 +1,7 @@
 #!/bin/bash
 
 linux_install() {
-    wget https://github.com/neovim/neovim/releases/download/v0.9.5/nvim.appimage
+    wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
     chmod +x nvim.appimage
     cp nvim.appimage /usr/local/bin/nvim
     ln -s /usr/local/bin/nvim /usr/local/bin/vim
