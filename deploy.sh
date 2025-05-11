@@ -22,6 +22,7 @@ run_scripts_for_dir() {
 }
 
 DEPENDENCY_ORDER=(
+    "base"
     "zsh"
     "tmux"
     "nvim"
