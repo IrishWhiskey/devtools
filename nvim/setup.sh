@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source $HOME/.mise-activate.sh
 pip3 install jupytext
 
 DIR="$( cd "$( dirname "$0" )" && pwd )"
