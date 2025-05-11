@@ -1,7 +1,7 @@
 #!/bin/bash
 
 linux_install() {
-    wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
+    wget https://github.com/neovim/neovim/releases/download/v0.11.1/nvim-linux-x86_64.appimage -O nvim.appimage
     chmod +x nvim.appimage
     cp nvim.appimage /usr/local/bin/nvim
     ln -s /usr/local/bin/nvim /usr/local/bin/vim
@@ -12,7 +12,8 @@ osx_install() {
 }
 
 # uninstall if present
-(./remove.sh)
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+"$SCRIPT_DIR/remove.sh"
 
 echo "nvim install"
 
