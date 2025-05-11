@@ -3,25 +3,13 @@ return {
     branch = 'v3.x',
     dependencies = {
         'neovim/nvim-lspconfig',
-        {
-            'williamboman/mason.nvim',
-            build = function()
-                pcall(vim.cmd, 'MasonUpdate')
-            end,
-        },
+        'williamboman/mason.nvim',
         'williamboman/mason-lspconfig.nvim',
         'hrsh7th/cmp-nvim-lsp',
         'hrsh7th/nvim-cmp',
         'L3MON4D3/LuaSnip',
     },
     config = function()
-        require('mason').setup({
-            ui = {
-                check_outdated_packages_on_open = false,
-            },
-            log_level = vim.log.levels.DEBUG
-        })
-
         local lsp = require('lsp-zero')
 
         lsp.preset("recommended")
@@ -43,55 +31,59 @@ return {
 
         local lspconfig = require("lspconfig")
 
-        vim.defer_fn(function()
-            require('mason-lspconfig').setup({
-                ensure_installed = {
-                    "eslint",
-                    "rust_analyzer",
-                    "pylsp"
-                },
-                automatic_installation = false,
-                handlers = {
-                    lsp.default_setup,
-                    lua_ls = function()
-                        local lua_opts = lsp.nvim_lua_ls()
-                        lspconfig.lua_ls.setup(lua_opts)
-                    end,
-                    pylsp = function()
-                        lspconfig.pylsp.setup({
-                            on_attach = lsp.on_attach,
-                            capabilities = lsp.capabilities,
-                            settings = {
-                                pylsp = { 
-                                    configurationSources = { "pycodestyle" },
-                                    plugins = {
-                                        autopep8 = { enabled = false },
-                                        flake8 = { enabled = false },
-                                        jedi_completion = { enabled = true, fuzzy = true },
-                                        jedi_definition = { enabled = true },
-                                        jedi_hover = { enabled = true },
-                                        jedi_references = { enabled = true },
-                                        jedi_signature_help = { enabled = true },
-                                        jedi_symbols = { enabled = true },
-                                        mccabe = { enabled = false },
-                                        preload = { enabled = false },
-                                        pycodestyle = { enabled = false },
-                                        pyflakes = { enabled = false },
-                                        rope_autoimport = { code_actions = { enabled = false }},
-                                        rope_autoimport = { completions = { enabled = false }},
-                                        yapf = { enabled = false },
-                                        ruff = { enabled = true, formatEnabled = true },
-                                        pylsp_mypy = { enabled = false },
-                                        -- black = { enabled = false },
-                                        isort = { enabled = true }
-                                    }
+        require('mason').setup({
+            ui = {
+                check_outdated_packages_on_open = false,
+            },
+        })
+
+        require('mason-lspconfig').setup({
+            ensure_installed = {
+                "eslint",
+                "rust_analyzer",
+                "pylsp"
+            },
+            automatic_installation = false,
+            handlers = {
+                lsp.default_setup,
+                lua_ls = function()
+                    local lua_opts = lsp.nvim_lua_ls()
+                    lspconfig.lua_ls.setup(lua_opts)
+                end,
+                pylsp = function()
+                    lspconfig.pylsp.setup({
+                        on_attach = lsp.on_attach,
+                        capabilities = lsp.capabilities,
+                        settings = {
+                            pylsp = {
+                                configurationSources = { "pycodestyle" },
+                                plugins = {
+                                    autopep8 = { enabled = false },
+                                    flake8 = { enabled = false },
+                                    jedi_completion = { enabled = true, fuzzy = true },
+                                    jedi_definition = { enabled = true },
+                                    jedi_hover = { enabled = true },
+                                    jedi_references = { enabled = true },
+                                    jedi_signature_help = { enabled = true },
+                                    jedi_symbols = { enabled = true },
+                                    mccabe = { enabled = false },
+                                    preload = { enabled = false },
+                                    pycodestyle = { enabled = false },
+                                    pyflakes = { enabled = false },
+                                    rope_autoimport = { code_actions = { enabled = false }},
+                                    rope_autoimport = { completions = { enabled = false }},
+                                    yapf = { enabled = false },
+                                    ruff = { enabled = true, formatEnabled = true },
+                                    pylsp_mypy = { enabled = false },
+                                    -- black = { enabled = false },
+                                    isort = { enabled = true }
                                 }
                             }
-                        })
-                    end,
-                },
-            })
-        end, 2000)
+                        }
+                    })
+                end,
+            },
+        })
 
         local cmp = require('cmp')
         local cmp_select = {behavior = cmp.SelectBehavior.Select}
