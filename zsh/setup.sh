@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "zsh setup"
-
 #install oh-my-zsh
 if ! [[ -d ${ZSH_CUSTOM:-~/.oh-my-zsh/} ]]; then
 	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "nvim remove"
-
 OS=$(uname -s)
 if [[ "$OS" == "Linux" ]]; then
     HOME=$(getent passwd $SUDO_USER | cut -d: -f6)

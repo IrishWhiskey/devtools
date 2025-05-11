@@ -15,8 +15,6 @@ osx_install() {
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$SCRIPT_DIR/remove.sh"
 
-echo "nvim install"
-
 OS=$(uname -s)
 if [[ "$OS" == "Linux" ]]; then
     HOME=$(getent passwd $SUDO_USER | cut -d: -f6)

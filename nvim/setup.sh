@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "nvim setup"
-
 pip3 install jupytext
 
 DIR="$( cd "$( dirname "$0" )" && pwd )"
