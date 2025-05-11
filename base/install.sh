@@ -1,7 +1,7 @@
 #!/bin/bash
 
 apt update -y
-apt install -y git curl build-essential
+apt install -y git curl build-essential xsel
 
 curl https://mise.run | sh
 
