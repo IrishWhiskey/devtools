@@ -12,4 +12,4 @@ fi
 
 #link .zshrc
 DIR="$( cd "$( dirname "$0" )" && pwd )"
-echo "source $DIR/zshrc" > $HOME/.zshrc
+echo "source $DIR/zshrc" >> $HOME/.zshrc
