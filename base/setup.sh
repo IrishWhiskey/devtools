@@ -6,6 +6,7 @@ touch $HOME/.zshrc
 rm -rf $HOME/.bashrc
 touch $HOME/.bashrc
 
+curl https://mise.run | sh
 MISE=$HOME/.local/bin/mise
 
 export PATH="$HOME/.local/bin:$PATH"

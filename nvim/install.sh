@@ -11,7 +11,7 @@ osx_install() {
     sudo -u $(logname) brew install neovim
 }
 
-source $HOME/.mise-activate.sh
+source $LOCAL_HOME/.mise-activate.sh
 
 # uninstall if present
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
