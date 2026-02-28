@@ -18,6 +18,11 @@ return {
                 enable = true,
                 update_root = false,
             },
+            -- Show all files including git-ignored ones
+            filters = {
+                git_ignored = false,
+                dotfiles = false,
+            },
             renderer = {
                 icons = {
                     webdev_colors = true,
