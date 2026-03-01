@@ -14,7 +14,7 @@ return {
         })
 
         require("nvim-treesitter").install({
-            "c", "cpp", "lua", "vim", "vimdoc", "query", "javascript", "typescript", "json", "python"
+            "c", "cpp", "lua", "vim", "vimdoc", "query", "javascript", "typescript", "json", "python", "markdown", "markdown_inline"
         })
     end,
 }
