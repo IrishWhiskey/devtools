@@ -6,6 +6,7 @@ fi
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LOGIN_USER=$(logname)
+export LOGIN_USER
 
 export LOCAL_HOME=$(sudo -H -u $LOGIN_USER bash -c 'echo $HOME')
 
@@ -26,7 +27,7 @@ run_scripts_for_dir() {
 DEPENDENCY_ORDER=(
     "base"
     "zsh"
-    "tmux"
+    "herdr"
     "nvim"
 )
 

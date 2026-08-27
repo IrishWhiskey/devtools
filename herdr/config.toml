@@ -1,0 +1,4 @@
+onboarding = false
+
+[keys]
+remove_worktree = "prefix+shift+k"
