@@ -9,8 +9,19 @@ source "$DEVTOOLS_ROOT/lib/common.sh"
 
 trap 'log_error "Deployment failed while running: ${BASH_COMMAND} (deploy.sh line $LINENO)"' ERR
 
+ALLOW_ROOT="${DEVTOOLS_ALLOW_ROOT:-0}"
+for arg in "$@"; do
+    case "$arg" in
+        --allow-root) ALLOW_ROOT=1 ;;
+        *)            die "Unknown argument: $arg (usage: ./deploy.sh [--allow-root])" ;;
+    esac
+done
+
 if [[ $EUID -eq 0 ]]; then
-    die "Run this script as your normal user, not root. sudo is used internally only where needed."
+    if [[ "$ALLOW_ROOT" != "1" ]]; then
+        die "Run this script as your normal user, not root. sudo is used internally only where needed. Override with --allow-root or DEVTOOLS_ALLOW_ROOT=1."
+    fi
+    log_warn "Running as root (--allow-root); user-level setup will target root's home directory"
 fi
 
 log_info "Platform: $PLATFORM"
