@@ -1,8 +1,20 @@
 #!/bin/bash
+set -Eeuo pipefail
 
-apt update -y
-apt install -y git curl build-essential xsel
+source "${DEVTOOLS_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}/lib/common.sh"
 
-apt install -y luarocks
+case "$PLATFORM" in
+    ubuntu)
+        install_packages git curl build-essential xsel luarocks
+        ;;
+    macos)
+        # clang/build tools come with Xcode CLT via Homebrew; xsel is macOS-native (pbcopy)
+        install_packages luarocks
+        has_command git || install_packages git
+        ;;
+    *)
+        die "base module does not support platform '$PLATFORM'"
+        ;;
+esac
 
-curl https://sh.rustup.rs -sSf | sh -s -- -y
+log_ok "Base packages installed"

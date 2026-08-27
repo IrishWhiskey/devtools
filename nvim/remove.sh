@@ -1,33 +1,25 @@
 #!/bin/bash
+set -Eeuo pipefail
 
-OS=$(uname -s)
-if [[ "$OS" == "Linux" ]]; then
-    HOME=$(getent passwd $SUDO_USER | cut -d: -f6)
-    OS_version=$(uname -v)
+source "${DEVTOOLS_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}/lib/common.sh"
 
-    if [[ "$OS_version" == *"Ubuntu"* ]]; then
-        apt-get remove -y neovim vim
-    elif [[ "$OS_version" == *"Debian"* ]]; then
-        apt-get remove -y neovim vim
-    elif [[ "$OS_version" == *"CentOS"* ]]; then
-        yum remove -y neovim vim
-    elif [[ "$OS_version" == *"RHEL"* ]]; then
-        yum remove -y neovim vim
-    elif [[ "$OS_version" == *"Fedora"* ]]; then
-        dnf remove -y neovim vim
-    elif [[ "$OS_version" == *"Arch"* ]]; then
-        pacman -Rn neovim vim
-    else
-        echo "Unknown OS version"
-    fi
-
-    rm -f /usr/local/bin/vim
-    rm -f /usr/local/bin/nvim
-elif [[ "$OS" == "Darwin" ]]; then
-    sudo -u $(logname) brew uninstall -f neovim vim
-else
-    echo "Unknown OS"
+# Remove distro packages (best-effort, in case a packaged neovim is present)
+if has_command apt-get; then
+    $SUDO apt-get remove -y neovim vim > /dev/null 2>&1 || true
+elif has_command dnf; then
+    $SUDO dnf remove -y neovim vim > /dev/null 2>&1 || true
+elif has_command pacman; then
+    $SUDO pacman -Rns --noconfirm neovim vim > /dev/null 2>&1 || true
 fi
 
-rm -rf $HOME/.local/share/nvim
-rm -rf $HOME/.config/nvim
+if [[ "$PLATFORM" == "macos" ]] && has_command brew; then
+    brew uninstall -f neovim vim > /dev/null 2>&1 || true
+fi
+
+# Remove our user-level install (tarball layout + config symlink + data dirs)
+rm -rf "$HOME/.local/opt/nvim"
+rm -f  "$HOME/.local/bin/nvim" "$HOME/.local/bin/vim"
+rm -rf "$HOME/.local/share/nvim" "$HOME/.local/state/nvim" "$HOME/.cache/nvim"
+rm -rf "$HOME/.config/nvim"
+
+log_ok "neovim removed"

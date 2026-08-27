@@ -1,15 +1,14 @@
 #!/bin/bash
+set -Eeuo pipefail
 
-DIR="$( cd "$( dirname "$0" )" && pwd )"
+source "${DEVTOOLS_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}/lib/common.sh"
 
-mkdir -p "$HOME/.config/herdr"
+MODULE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-if [ -e "$HOME/.config/herdr/config.toml" ] && [ ! -L "$HOME/.config/herdr/config.toml" ]; then
-	mv "$HOME/.config/herdr/config.toml" "$HOME/.config/herdr/config.toml.bak"
+link_config "$MODULE_DIR/config.toml" "$HOME/.config/herdr/config.toml"
+
+if has_command herdr; then
+    herdr server reload-config > /dev/null 2>&1 || true
 fi
 
-ln -sf "$DIR/config.toml" "$HOME/.config/herdr/config.toml"
-
-if command -v herdr &>/dev/null; then
-	herdr server reload-config &>/dev/null
-fi
+log_ok "herdr setup complete"

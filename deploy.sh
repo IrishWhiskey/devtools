@@ -1,65 +1,77 @@
 #!/bin/bash
-if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 
-   exit 1
+set -Eeuo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export DEVTOOLS_ROOT="$SCRIPT_DIR"
+
+# shellcheck source=lib/common.sh
+source "$DEVTOOLS_ROOT/lib/common.sh"
+
+trap 'log_error "Deployment failed while running: ${BASH_COMMAND} (deploy.sh line $LINENO)"' ERR
+
+if [[ $EUID -eq 0 ]]; then
+    die "Run this script as your normal user, not root. sudo is used internally only where needed."
 fi
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-LOGIN_USER=$(logname)
-export LOGIN_USER
+log_info "Platform: $PLATFORM"
 
-export LOCAL_HOME=$(sudo -H -u $LOGIN_USER bash -c 'echo $HOME')
+if [[ -n "$SUDO" ]]; then
+    $SUDO -v || die "sudo authentication is required on Linux for package installation"
+fi
 
-run_scripts_for_dir() {
-    local dir="$1"
+# Modules run in dependency order; anything else in the repo root runs after.
+MODULES_ORDER=(base zsh herdr nvim)
 
-    if [ -f "$dir/install.sh" ]; then
-        echo "Running $dir/install.sh as root..."
-        "$dir/install.sh"
+run_module_scripts() {
+    local dir="$1" name
+    name="$(basename "$dir")"
+    if [[ -f "$dir/install.sh" ]]; then
+        log_info "[$name] install.sh (system-level; may use sudo)"
+        bash "$dir/install.sh"
     fi
-
-    if [ -f "$dir/setup.sh" ]; then
-        echo "Running $dir/setup.sh as $LOGIN_USER..."
-        sudo -u "$LOGIN_USER" "$dir/setup.sh"
+    if [[ -f "$dir/setup.sh" ]]; then
+        log_info "[$name] setup.sh (user-level)"
+        bash "$dir/setup.sh"
     fi
 }
 
-DEPENDENCY_ORDER=(
-    "base"
-    "zsh"
-    "herdr"
-    "nvim"
-)
-
-for dependency in "${DEPENDENCY_ORDER[@]}"; do
-    dir="$SCRIPT_DIR/$dependency"
-    if [ -d "$dir" ]; then
-        echo "Processing dependency: $dependency"
-        run_scripts_for_dir "$dir"
-    else
-        echo "Warning: Dependency directory not found: $dependency"
+completed=""
+for module in "${MODULES_ORDER[@]}"; do
+    dir="$DEVTOOLS_ROOT/$module"
+    if [[ ! -d "$dir" ]]; then
+        log_warn "Module directory not found: $module (skipping)"
+        continue
     fi
+    log_info "===== Module: $module ====="
+    run_module_scripts "$dir"
+    completed="$completed $module "
 done
 
-echo "Processing any remaining directories..."
-for dir in "$SCRIPT_DIR"/*/ ; do
-    if [ -d "$dir" ]; then
-        dirname=$(basename "$dir")
-
-        if [[ " ${DEPENDENCY_ORDER[*]} " == *" $dirname "* ]]; then
-            continue
-        fi
-
-        echo "Processing additional directory: $dirname"
-        run_scripts_for_dir "$dir"
-    fi
+log_info "Processing any remaining module directories..."
+for dir in "$DEVTOOLS_ROOT"/*/; do
+    [[ -d "$dir" ]] || continue
+    name="$(basename "$dir")"
+    [[ " $completed " == *" $name "* ]] && continue
+    [[ "$name" == "lib" ]] && continue
+    log_info "===== Additional module: $name ====="
+    run_module_scripts "$dir"
 done
 
-if command -v zsh &> /dev/null; then
-    echo "Changing shell to zsh..."
-    chsh -s $(which zsh)
+# Make zsh the login shell (for the invoking user, not root)
+if [[ "${SHELL:-}" == *zsh ]]; then
+    log_ok "Login shell is already zsh"
 else
-    echo "zsh is not installed, cannot change shell"
+    zsh_path="$(command -v zsh || true)"
+    if [[ -z "$zsh_path" ]]; then
+        log_warn "zsh not found; login shell not changed"
+    elif [[ "$PLATFORM" == "macos" ]]; then
+        log_info "Setting login shell to zsh (may prompt for your password)..."
+        chsh -s /bin/zsh
+        log_ok "Login shell set to zsh"
+    else
+        $SUDO chsh -s "$zsh_path" "$USER"
+        log_ok "Login shell set to zsh"
+    fi
 fi
 
-echo "Deployment complete!"
+log_ok "Deployment complete!"

@@ -1,11 +1,21 @@
 #!/bin/bash
+set -Eeuo pipefail
 
-source $HOME/.mise-activate.sh
-pip3 install jupytext
+source "${DEVTOOLS_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}/lib/common.sh"
 
-DIR="$( cd "$( dirname "$0" )" && pwd )"
+MODULE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-TARGET_DIR=${HOME}/.config/nvim
+# --- jupytext (prefer mise-managed python; fall back to system pip) ---
+export PATH="$HOME/.local/bin:$PATH"
+if [[ -x "$HOME/.local/bin/mise" ]]; then
+    "$HOME/.local/bin/mise" exec -- pip install jupytext \
+        || pip3 install jupytext \
+        || log_warn "jupytext installation failed; continuing"
+else
+    pip3 install jupytext || log_warn "jupytext installation failed; continuing"
+fi
 
-mkdir -p ${TARGET_DIR}
-cp -rf ${DIR}/config/* ${TARGET_DIR}
+# --- Config: symlink the repo config so `git pull` updates it ---
+link_config "$MODULE_DIR/config" "$HOME/.config/nvim"
+
+log_ok "nvim setup complete"

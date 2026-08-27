@@ -1,6 +1,11 @@
 #!/bin/bash
+set -Eeuo pipefail
 
-#install herdr
-if ! sudo -H -u "$LOGIN_USER" sh -c 'command -v herdr &>/dev/null'; then
-	curl -fsSL https://herdr.dev/install.sh | sudo -H -u "$LOGIN_USER" sh
+source "${DEVTOOLS_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}/lib/common.sh"
+
+if ! has_command herdr; then
+    log_info "Installing herdr..."
+    curl -fsSL https://herdr.dev/install.sh | sh
 fi
+
+log_ok "herdr available at $(command -v herdr)"
