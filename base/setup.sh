@@ -28,6 +28,7 @@ log_ok "mise toolchains: $("$MISE_BIN" ls --current | tr '\n' ' ')"
 # --- Point luarocks at the mise-managed lua ---
 if has_command luarocks; then
     if lua_dir="$("$MISE_BIN" where lua 2>/dev/null)"; then
+        mkdir -p "$HOME/.luarocks"
         luarocks config --local lua_dir "$lua_dir"
         luarocks config --local lua_version 5.3
         log_ok "luarocks configured to use mise lua at $lua_dir"
