@@ -29,8 +29,14 @@ log_ok "mise toolchains: $("$MISE_BIN" ls --current | tr '\n' ' ')"
 if has_command luarocks; then
     if lua_dir="$("$MISE_BIN" where lua 2>/dev/null)"; then
         mkdir -p "$HOME/.luarocks"
-        luarocks config --local lua_dir "$lua_dir"
-        luarocks config --local lua_version 5.3
+        # luarocks refuses --local when running as root; --tree on the same dir is equivalent
+        if [[ $EUID -eq 0 ]]; then
+            lr_scope=(--tree="$HOME/.luarocks")
+        else
+            lr_scope=(--local)
+        fi
+        luarocks config "${lr_scope[@]}" lua_dir "$lua_dir"
+        luarocks config "${lr_scope[@]}" lua_version 5.3
         log_ok "luarocks configured to use mise lua at $lua_dir"
     else
         log_warn "Could not resolve mise lua location; skipping luarocks configuration"
